@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Form with Firebase</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+    <h2 class="mb-4">Contact Us</h2>
+    <form id="contactForm">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Import Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDPBvblTaKsa96LvN7u1e2_4OteVa8mrcE",
+            authDomain: "vijay-cc84b.firebaseapp.com",
+            databaseURL: "https://vijay-cc84b-default-rtdb.firebaseio.com",
+            projectId: "vijay-cc84b",
+            storageBucket: "vijay-cc84b.appspot.com",
+            messagingSenderId: "296711711714",
+            appId: "1:296711711714:web:071a3d51f0073283ee27bb"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Form Submission Handling
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent page refresh
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+
+            set(ref(database, 'users/' + name), {
+                name: name,
+                email: email
+            })
+            .then(() => {
+                alert("Data saved successfully!");
+                document.getElementById('contactForm').reset(); // Clear form fields
+            })
+            .catch((error) => {
+                console.error("Error saving data: ", error);
+            });
+        });
+    </script>
+</body>
+</html>
